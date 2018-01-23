@@ -14,7 +14,7 @@ describe Normalizer do
                     "I am the very model of a modern major general"],
                   ["2014-03-12T14:00:00-04:00",
                     "Somewhere Else, In Another Time, BB",
-                    "1",
+                    "00001",
                     "Superman übertan",
                     "111:23:32.123",
                     "1:32:33.123",
@@ -30,5 +30,10 @@ describe Normalizer do
 
   it 'converts reads time as Pacific and converts to Eastern with ISO formatting' do
     expect(Normalizer.new.convert_zone("4/1/11 11:00:00 AM PST")).to eq "2011-04-01T13:00:00-04:00" # April 1 is during Eastern Daylight Time
+  end
+
+  it 'standardizes zipcode to have 5 digits' do
+    expect(Normalizer.new.standardize_zipcode('1')).to eq "00001"
+    expect(Normalizer.new.standardize_zipcode('')).to eq "00000"
   end
 end
