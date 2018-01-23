@@ -41,4 +41,8 @@ describe Normalizer do
     expect(Normalizer.new.upcase_name("Monkey Alberto")).to eq ("MONKEY ALBERTO")
     expect(Normalizer.new.upcase_name("Superman übertan")).to eq ("SUPERMAN ÜBERTAN")
   end
+
+  it 'converts seconds' do
+    expect(Normalizer.new.convert_seconds("1:23:32.123")).to eq (1516609412.1230001)
+  end
 end

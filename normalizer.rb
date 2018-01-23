@@ -10,6 +10,8 @@ class Normalizer
         row[:timestamp] = convert_zone(row[:timestamp])
         row[:zip] = standardize_zipcode(row[:zip])
         row[:fullname] = upcase_name(row[:fullname])
+        row[:fooduration] = convert_seconds(row[:fooduration])
+        row[:barduration] = convert_seconds(row[:barduration])
         csv << row
       end
     end
@@ -28,6 +30,10 @@ class Normalizer
 
   def upcase_name(name)
     name.mb_chars.upcase.to_s
+  end
+
+  def convert_seconds(time)
+    Time.strptime(time, "%H:%M:%S.%N").to_f
   end
 end
 
