@@ -4,7 +4,7 @@ require 'pry'
 describe Normalizer do
   it 'can read a CSV file and writes each field as a string in an array' do
     Normalizer.new.csv_normalizer('test.csv')
-    parsed_data = [["2011-04-01 13:00:00 -0400",
+    parsed_data = [["2011-04-01T13:00:00-04:00",
                     "123 4th St, Anywhere, AA",
                     "94121",
                     "Monkey Alberto",
@@ -12,7 +12,7 @@ describe Normalizer do
                     "1:32:33.123",
                     "zzsasdfa",
                     "I am the very model of a modern major general"],
-                  ["2014-03-12 14:00:00 -0400",
+                  ["2014-03-12T14:00:00-04:00",
                     "Somewhere Else, In Another Time, BB",
                     "1",
                     "Superman übertan",
@@ -28,7 +28,7 @@ describe Normalizer do
     expect(CSV.read('normalized.csv').all? { |row| row.each { |field| field.encoding.to_s == "UTF-8" }}).to eq true
   end
 
-  it 'converts reads time as Pacific and converts to Eastern' do
-    expect(Normalizer.new.convert_zone("4/1/11 11:00:00 AM PST")).to eq "Fri, 01 Apr 2011 13:00:00 EDT -04:00" # April 1 is during Eastern Daylight Time
+  it 'converts reads time as Pacific and converts to Eastern with ISO formatting' do
+    expect(Normalizer.new.convert_zone("4/1/11 11:00:00 AM PST")).to eq "2011-04-01T13:00:00-04:00" # April 1 is during Eastern Daylight Time
   end
 end
