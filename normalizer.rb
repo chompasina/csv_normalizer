@@ -12,6 +12,7 @@ class Normalizer
         row[:fullname] = upcase_name(row[:fullname])
         row[:fooduration] = convert_seconds(row[:fooduration])
         row[:barduration] = convert_seconds(row[:barduration])
+        row[:totalduration] = add_durations(row[:fooduration], row[:barduration])
         csv << row
       end
     end
@@ -41,6 +42,10 @@ class Normalizer
     hh, m = minutes.divmod(60)
     mm, ss = seconds.divmod(60)
     total = ((d * 24 * 60 * 60) + ((h + hh) * 60 * 60) + ((m + mm) * 60) + ss)
+  end
+
+  def add_durations(foo, bar)
+    foo + bar
   end
 end
 
