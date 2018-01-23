@@ -4,8 +4,8 @@ require 'active_support/time'
 require 'pry'
 
 class Normalizer
-  def csv_normalizer(file)
-    CSV.open 'normalized.csv', 'wb', col_sep: "," do |csv|
+  def self.csv_normalizer(file)
+    CSV.open 'normalized.csv', 'wb', col_sep: ",", force_quotes: true do |csv|
       normalized_data = CSV.foreach(file, headers: true, header_converters: :symbol, encoding: "utf-8:utf-8") do |row|
         row[:timestamp] = convert_zone(row[:timestamp])
         row[:zip] = standardize_zipcode(row[:zip])
@@ -18,22 +18,22 @@ class Normalizer
     end
   end
 
-  def convert_zone(time)
+  def self.convert_zone(time)
     Time.use_zone("America/New_York") do
       formatted_time = Time.strptime(time + " PST", '%m/%d/%y %H:%M:%S %z').to_s
       Time.zone.parse(formatted_time).iso8601
     end
   end
 
-  def standardize_zipcode(zip)
+  def self.standardize_zipcode(zip)
     zip.to_s.rjust(5,"0")[0..4]
   end
 
-  def upcase_name(name)
+  def self.upcase_name(name)
     name.mb_chars.upcase.to_s
   end
 
-  def convert_seconds(time)
+  def self.convert_seconds(time)
     hours = time.split(":").first.to_f
     minutes = time.split(":")[1].to_f
     seconds = time.split(":").last.to_f
@@ -44,8 +44,9 @@ class Normalizer
     total = ((d * 24 * 60 * 60) + ((h + hh) * 60 * 60) + ((m + mm) * 60) + ss)
   end
 
-  def add_durations(foo, bar)
+  def self.add_durations(foo, bar)
     foo + bar
   end
 end
 
+Normalizer.csv_normalizer(ARGV[0]) if ARGV[0] != "spec/normalizer_spec.rb"
