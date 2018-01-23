@@ -33,7 +33,14 @@ class Normalizer
   end
 
   def convert_seconds(time)
-    Time.strptime(time, "%H:%M:%S.%N").to_f
+    hours = time.split(":").first.to_f
+    minutes = time.split(":")[1].to_f
+    seconds = time.split(":").last.to_f
+
+    d, h = hours.divmod(24)
+    hh, m = minutes.divmod(60)
+    mm, ss = seconds.divmod(60)
+    total = ((d * 24 * 60 * 60) + ((h + hh) * 60 * 60) + ((m + mm) * 60) + ss)
   end
 end
 

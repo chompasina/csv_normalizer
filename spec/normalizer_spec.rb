@@ -8,16 +8,16 @@ describe Normalizer do
                     "123 4th St, Anywhere, AA",
                     "94121",
                     "MONKEY ALBERTO",
-                    "1:23:32.123",
-                    "1:32:33.123",
+                    "5012.123",
+                    "5553.123",
                     "zzsasdfa",
                     "I am the very model of a modern major general"],
                   ["2014-03-12T14:00:00-04:00",
                     "Somewhere Else, In Another Time, BB",
                     "00001",
                     "SUPERMAN ÜBERTAN",
-                    "111:23:32.123",
-                    "1:32:33.123",
+                    "401012.123",
+                    "5553.123",
                     "zzsasdfa",
                     "This is some Unicode right here. ü ¡! 😀"]]
     expect(CSV.read('normalized.csv')).to eq parsed_data
@@ -43,6 +43,7 @@ describe Normalizer do
   end
 
   it 'converts seconds' do
-    expect(Normalizer.new.convert_seconds("1:23:32.123")).to eq (1516609412.1230001)
+    expect(Normalizer.new.convert_seconds("1:23:32.123")).to eq (5012.123)
+    expect(Normalizer.new.convert_seconds("111:23:32.123")).to eq (401012.123)
   end
 end
