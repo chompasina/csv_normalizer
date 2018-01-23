@@ -7,7 +7,7 @@ describe Normalizer do
     parsed_data = [["2011-04-01T13:00:00-04:00",
                     "123 4th St, Anywhere, AA",
                     "94121",
-                    "Monkey Alberto",
+                    "MONKEY ALBERTO",
                     "1:23:32.123",
                     "1:32:33.123",
                     "zzsasdfa",
@@ -15,7 +15,7 @@ describe Normalizer do
                   ["2014-03-12T14:00:00-04:00",
                     "Somewhere Else, In Another Time, BB",
                     "00001",
-                    "Superman übertan",
+                    "SUPERMAN ÜBERTAN",
                     "111:23:32.123",
                     "1:32:33.123",
                     "zzsasdfa",
@@ -35,5 +35,10 @@ describe Normalizer do
   it 'standardizes zipcode to have 5 digits' do
     expect(Normalizer.new.standardize_zipcode('1')).to eq "00001"
     expect(Normalizer.new.standardize_zipcode('')).to eq "00000"
+  end
+
+  it 'upcases names' do
+    expect(Normalizer.new.upcase_name("Monkey Alberto")).to eq ("MONKEY ALBERTO")
+    expect(Normalizer.new.upcase_name("Superman übertan")).to eq ("SUPERMAN ÜBERTAN")
   end
 end

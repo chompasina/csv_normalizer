@@ -9,6 +9,7 @@ class Normalizer
       normalized_data = CSV.foreach(file, headers: true, header_converters: :symbol, encoding: "utf-8:utf-8") do |row|
         row[:timestamp] = convert_zone(row[:timestamp])
         row[:zip] = standardize_zipcode(row[:zip])
+        row[:fullname] = upcase_name(row[:fullname])
         csv << row
       end
     end
@@ -23,6 +24,10 @@ class Normalizer
 
   def standardize_zipcode(zip)
     zip.to_s.rjust(5,"0")[0..4]
+  end
+
+  def upcase_name(name)
+    name.mb_chars.upcase.to_s
   end
 end
 
