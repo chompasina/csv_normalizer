@@ -22,4 +22,9 @@ describe Normalizer do
                     "This is some Unicode right here. ü ¡! 😀"]]
     expect(CSV.read('normalized.csv')).to eq parsed_data
   end
+
+  it 'can read UTF-8 character set' do
+    Normalizer.new.csv_normalizer('test.csv')
+    expect(CSV.read('normalized.csv').all? { |row| row.each { |field| field.encoding.to_s == "UTF-8" }}).to eq true
+  end
 end
