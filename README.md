@@ -1,6 +1,6 @@
 # CSV Normalizer
 
-This CSV parser takes in CSVs, enforces UTF-8 character encoding, normalizes timestamps, zipcodes, uppercases names, converts durations to floating point seconds, and sums them.
+This CSV parser takes in CSVs, enforces UTF-8 character encoding, normalizes timestamps and zipcodes, uppercases names, converts durations to floating point seconds, and adds the durations together.
 
 ## To run:
 
