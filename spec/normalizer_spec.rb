@@ -1,6 +1,7 @@
 require_relative '../normalizer.rb'
 
 describe Normalizer do
+
   it 'can read a CSV file and writes each field as a string in an array' do
     Normalizer.csv_normalizer('test.csv')
     parsed_data = [["2011-04-01T13:00:00-04:00",
