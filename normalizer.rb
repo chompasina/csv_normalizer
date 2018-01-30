@@ -1,21 +1,29 @@
 require 'csv'
 require 'time'
 require 'active_support/time'
-require 'pry'
 
 class Normalizer
   def self.csv_normalizer(file)
-    CSV.open 'normalized.csv', 'wb', col_sep: ",", force_quotes: true do |csv|
-      normalized_data = CSV.foreach(file, headers: true, header_converters: :symbol, encoding: "utf-8:utf-8") do |row|
-        row[:timestamp] = convert_zone(row[:timestamp])
-        row[:zip] = standardize_zipcode(row[:zip])
-        row[:fullname] = upcase_name(row[:fullname])
-        row[:fooduration] = convert_seconds(row[:fooduration])
-        row[:barduration] = convert_seconds(row[:barduration])
-        row[:totalduration] = add_durations(row[:fooduration], row[:barduration])
-        csv << row
+      CSV.open 'normalized.csv', 'wb', col_sep: ",", force_quotes: true do |csv|
+        begin
+        normalized_data = CSV.foreach(file, headers: true, header_converters: :symbol, encoding: "utf-8:utf-8") do |row|
+          raise "Deleting #{row} due to improper encoding" unless row.to_s.valid_encoding?
+          row[:timestamp] = convert_zone(row[:timestamp])
+          row[:zip] = standardize_zipcode(row[:zip])
+          row[:fullname] = upcase_name(row[:fullname])
+          row[:fooduration] = convert_seconds(row[:fooduration])
+          row[:barduration] = convert_seconds(row[:barduration])
+          row[:totalduration] = add_durations(row[:fooduration], row[:barduration])
+          csv << row
+        end
+        rescue ArgumentError => e
+          puts e.message
+          puts e.backtrace.inspect
+        rescue StandardError => e
+          puts e.message
+          puts e.backtrace.inspect
+        end
       end
-    end
   end
 
   def self.convert_zone(time)
