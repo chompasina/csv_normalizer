@@ -1,5 +1,4 @@
 require_relative '../normalizer.rb'
-require 'pry'
 
 describe Normalizer do
   it 'can read a CSV file and writes each field as a string in an array' do
